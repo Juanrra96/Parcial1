@@ -22,7 +22,7 @@ public class SeriesTVRepository {
             connection.Open();
             connection.Execute(
                 @"CREATE TABLE IF NOT EXISTS SeriesTV (
-                        Id INT PRIMARY KEY,
+                        Id IDENTITY PRIMARY KEY,
                         Nombre TEXT NULL,
                         Plataforma TEXT NULL,
                         Calificacion INT NULL
