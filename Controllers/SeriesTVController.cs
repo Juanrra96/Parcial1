@@ -46,7 +46,7 @@ namespace Parcial1.Controllers
             
             repositorio.Crear(model);
 
-            return Ok();
+            return Ok("Se agrego una serie");
 
         }
 
@@ -54,13 +54,13 @@ namespace Parcial1.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] SerieTV model)
         {
-            var serieTV = repositorio.LeerPorId(model.Id);
+            var serieTV = repositorio.LeerPorId(id);
             if(serieTV == null){
                 return NotFound();
             }
             
             repositorio.Actualizar(model);
-            return Ok();
+            return Ok("Se actualizo correctamente");
 
         }
 
@@ -73,7 +73,7 @@ namespace Parcial1.Controllers
                 return NotFound();
             }
             repositorio.Borrar(id);
-            return Ok();
+            return Ok("Se elimino una serie");
 
         }
     }

@@ -22,7 +22,7 @@ public class SeriesTVRepository {
             connection.Open();
             connection.Execute(
                 @"CREATE TABLE IF NOT EXISTS SeriesTV (
-                        Id IDENTITY PRIMARY KEY,
+                        Id INT PRIMARY KEY,
                         Nombre TEXT NULL,
                         Plataforma TEXT NULL,
                         Calificacion INT NULL
@@ -49,7 +49,7 @@ public class SeriesTVRepository {
         internal void Crear(SerieTV model)
         {
             using(var con = new SqliteConnection(DBCON)){
-                con.Execute("INSERT INTO SeriesTV ( Nombre, Plataforma, Calificacion) VALUES ( @Nombre, @Plataforma, @Calificacion ) "
+                con.Execute("INSERT INTO SeriesTV ( Id, Nombre, Plataforma, Calificacion) VALUES ( @Id, @Nombre, @Plataforma, @Calificacion ) "
                     , model);
             }
         }
@@ -57,7 +57,7 @@ public class SeriesTVRepository {
         internal void Actualizar(SerieTV model)
         {
              using(var con = new SqliteConnection(DBCON)){
-                 con.Execute("UPDATE SeriesTV SET  Nombre = @Nombre , Plataforma = @Plataforma, Calificacion = @Calificacion WHERE Id = @Id "
+                 con.Execute("UPDATE SeriesTV SET Nombre = @Nombre , Plataforma = @Plataforma, Calificacion = @Calificacion WHERE Id = @Id "
                     , model);
             }
         }
