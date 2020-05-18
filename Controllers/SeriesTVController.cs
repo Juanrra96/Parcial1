@@ -11,36 +11,70 @@ namespace Parcial1.Controllers
     [ApiController]
     public class SeriesTVController : ControllerBase
     {
+
+        SeriesTVRepository repositorio;
+        public SeriesTVController()
+        {
+
+            repositorio = new SeriesTVRepository();
+        }
+
         // GET: api/SeriesTV
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<SerieTV>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var todos = repositorio.LeerTodos();
+            return todos;
         }
 
         // GET: api/SeriesTV/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<SerieTV> Get(int id)
         {
-            return "value";
+            var serieTV = repositorio.LeerPorId(id);
+            if(serieTV == null){
+                return NotFound();
+            }
+            return serieTV;
+
         }
 
         // POST: api/SeriesTV
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] SerieTV model)
         {
+            
+            repositorio.Crear(model);
+
+            return Ok();
+
         }
 
         // PUT: api/SeriesTV/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] SerieTV model)
         {
+            var serieTV = repositorio.LeerPorId(model.Id);
+            if(serieTV == null){
+                return NotFound();
+            }
+            
+            repositorio.Actualizar(model);
+            return Ok();
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var serieTV = repositorio.LeerPorId(id);
+            if(serieTV == null){
+                return NotFound();
+            }
+            repositorio.Borrar(id);
+            return Ok();
+
         }
     }
 }

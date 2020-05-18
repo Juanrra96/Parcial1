@@ -1,4 +1,4 @@
-namespace Parcial1.Models
+namespace Parcial1
  {
      public class SerieTV
      {
