@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
@@ -12,14 +13,15 @@ public class SeriesTVRepository {
     {
         
     }
+        private const string DBCON = @"Data Source=mydb.db;";
 
         public static void IniciarBD(){
-        using (var connection = new SqliteConnection(@"Data Source=mydb.db;"))
+        using (var connection = new SqliteConnection(DBCON))
 //        ("" +    new SqliteConnectionStringBuilder()  {        DataSource = "data.db"  }))
         {
             connection.Open();
             connection.Execute(
-                @"CREATE TABLE IF NOT EXISTS Leches (
+                @"CREATE TABLE IF NOT EXISTS SeriesTV (
                         Id INT PRIMARY KEY,
                         Nombre TEXT NULL,
                         Plataforma TEXT NULL,
@@ -29,27 +31,43 @@ public class SeriesTVRepository {
                                     }
         internal List<SerieTV> LeerTodos()
         {
-            throw new NotImplementedException();
+            using(var con = new SqliteConnection(DBCON)){
+
+                return con.Query<SerieTV>("SELECT Id, Nombre, Plataforma, Calificacion FROM SeriesTV ").ToList();
+            }
+
         }
 
         internal SerieTV LeerPorId(int id)
         {
-            throw new NotImplementedException();
+            using(var con = new SqliteConnection(DBCON)){
+                return con.Query<SerieTV>("SELECT Id, Nombre, Plataforma, Calificacion FROM SeriesTV WHERE Id = @Id "
+                    , new { Id = id }).FirstOrDefault();
+            }
         }
 
         internal void Crear(SerieTV model)
         {
-            throw new NotImplementedException();
+            using(var con = new SqliteConnection(DBCON)){
+                con.Execute("INSERT INTO SeriesTV ( Nombre, Plataforma, Calificacion) VALUES ( @Nombre, @Plataforma, @Calificacion ) "
+                    , model);
+            }
         }
 
         internal void Actualizar(SerieTV model)
         {
-            throw new NotImplementedException();
+             using(var con = new SqliteConnection(DBCON)){
+                 con.Execute("UPDATE SeriesTV SET  Nombre = @Nombre , Plataforma = @Plataforma, Calificacion = @Calificacion WHERE Id = @Id "
+                    , model);
+            }
         }
 
         internal void Borrar(int id)
         {
-            throw new NotImplementedException();
+            using(var con = new SqliteConnection(DBCON)){
+                con.Execute("DELETE FROM SeriesTV WHERE Id = @Id "
+                    , new { Id = id });
+            }
         }
     }
 
